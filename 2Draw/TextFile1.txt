@@ -1,0 +1,108 @@
+﻿Rectangle rotation calculation...? 
+
+
+Say I have a rectangle center at 0,0. width = 10 and height = 20. So the four corners are (-5, 10)....etc. 
+After I rotate it say 30 degrees. What are the four new corner values? What is the general formula to calculate if there is one. 
+
+
+ Best Answer:   
+ The general rotation transform function is to multiply its coordinate in complex coordination by the transform function of 
+ R(teta)=cos(teta)+i*sin(teta) where teta is the transform (rotation) angle and i is the imaginary unique value. 
+ Suppose coordination of your point is (x,y); so the transformed point (x',y') would be: 
+ x'+i*y'=(x+i*y)* 
+ [cos(teta)+i*sin(teta)] 
+ =[x*cos(teta)-y*sin(teta)]+ 
+ i*[x*sin(teta)+y*cos(teta)] 
+ therefore: 
+ x'=x*cos(teta)-y*sin(teta) 
+ y'=x*sin(teta)+y*cos(teta) 
+
+ in your example, the point (-5,10) after rotation of 30 degrees counterclockwise will be transformed to: 
+ x'=-5*cos(30)-10*sin(30)~ -9.33 
+ y'=-5*sin(30)+10*cos(30)~ +6.16 
+
+
+ ----------------------------------
+
+ to define the points generally given rotation, you transform the local coordinates you've defined (would be 2.5 in your example though!):
+
+
+Code:
+transformedX = x * cos( theta ) - y * sin( theta )
+transformedY = x * sin( theta ) + y * cos( theta )
+
+where theta is your rotation in radians (radians = degrees * pi / 180). 
+you can do a search for "2d rotation matrix" to get a background on the math.
+ so, if you had a method for getting the top left point of the rectangle only, it would look like this:
+
+
+Code:
+function getTopLeft( width:Number, height:Number, theta:Number ) : Point
+{
+	//half width and height directed appropriately (for top left)
+	var hw:Number = -width / 2;
+	var hh:Number = -height / 2;
+	var cos:Number = Math.cos( theta );
+	var sin:Number = Math.sin( theta );
+	return new Point( hw * cos - hh * sin, hw * sin + hh * cos );
+}
+This is obviously very specific and you probably want to handle the problem generally instead, but i
+ thought this would illustrate the solution to the purely mathematical end of it- the algorithm's design should be application specific. 
+
+
+ ---------------------line slopes--------------------------
+ 
+    Public Shared Function CheckWithin(p1 As PointF, p2 As PointF, find As PointF) As Double
+        Return (p1.Y - p2.Y) * (p1.X - find.X) - (p1.Y - find.Y) * (p1.X - p2.X)
+    End Function
+
+    Public Shared Function Check(pStart As PointF, pEnd As PointF, pfind As PointF) As Double
+        Dim area As Double = (pStart.X * (pEnd.Y - pfind.Y) + pEnd.X * (pfind.Y - pStart.Y) + pfind.X * (pStart.Y - pEnd.Y)) / 2
+        '=+/- 5? deadband, needs tested
+        'need to set a limit for between the p1, and p2
+
+        Return area
+    End Function
+
+
+
+    'http://stackoverflow.com/questions/3813681/checking-to-see-if-3-points-are-on-the-same-line
+    'You can check If the area Of the ABC triangle Is 0:
+    '[ Ax * (By - Cy) + Bx * (Cy - Ay) + Cx * (Ay - By) ] / 2
+
+
+    'Of course, you don't actually need to divide by 2.
+
+    'florin 
+    '9,69842745 
+
+
+
+    ' This Is much better because there Is no risk of dividing by 0. – John Smith Sep 28 '10 at 14:31 
+
+
+    'Just to point something out... This Is mathematically equivalent to @dcp's answer above 
+    '(if you ignore the /2), but checking if the area is 0 makes it easier to add a tolerance... 
+    '(i.e. stuff < err_tolerance instead of stuff1 == stuff2 as @dcp does above) – Joe Kington Sep 28 '10 at 14:43  
+
+    '+1 mathematically Is the same but the concept Is more simple/visual/straighforward (i Like it). 
+    '– joaquin Sep 28 '10 at 15:08  
+
+    'Using this formula With A:(516,520) B:(538,523) And C:(526,475) I get the area -1578! Why Is that? 
+    '– Hossein Oct 2 '10 at 11:02 
+
+    '@Hossein: Are you asking about the absolute value, Or about the sign? With your points And my formula 
+    'I'm getting -510. The sign means that you chose a certain order of the points. You could swap A with C or B 
+    'And you'll get a positive area, even thought it's the same triangle. – florin Oct 4 '10 at 4:30 
+
+    '@Joe Kington (1) You need to do -tolerance < stuff < tolerance. (2) @florin's formula requires 3 
+    'multiplications and 5 additions/subtractions to give a "should be zero" result. @dcp's formula, 
+    'adjusted by changing == To -, requires 2 mults And 5 subtractions To give a "should be zero" result. I'd 
+    'give @dcp the tick, not @florin. – John Machin Oct 6 '10 at 2:53 
+
+    'What about three points In 3D space? – Rasoul Jul 30 '13 at 16:10 
+
+    '@JohnMachin If you want To go To the bare CPU operations, With my formula you need only one comparison, 
+    'since the value will be always positive. With dcp's test you need two comparisons, since you don't know the '
+    'sign of the difference. – florin Jan 8 '14 at 1:21  
+

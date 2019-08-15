@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="SurfaceHighLight" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Teal</Value>
+    </Setting>
+    <Setting Name="CircleDefPoints" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">32</Value>
+    </Setting>
+    <Setting Name="PageBoarder" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">0.25</Value>
+    </Setting>
+    <Setting Name="GridSpacing" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="GridColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">224, 224, 224</Value>
+    </Setting>
+    <Setting Name="Warnings" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProgramUpdatePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\sbs\data shared\Control Dept\Programming\2Draw\2Draw\bin</Value>
+    </Setting>
+    <Setting Name="CrossHairColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="CurrentPDF" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Microsoft Print to PDF</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
